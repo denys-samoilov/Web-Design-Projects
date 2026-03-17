@@ -1,11 +1,14 @@
 function Fibonacci() {
-    let array = [0, 1, 1, 2, 3, 5, 8, 13, 21, 34];
-    let i = 0;
-    let sum = 0;
-    while (i < array.length) {
-        sum = sum + array[i];
+    let array = [0, 1];
+    let i = 1;
+    let sum = 1;
+    while (i < 9) {
+        let nextNum = array[i-1]+array[i];
+        sum += nextNum;
+        array.push(nextNum);
         i++;
     }
+    alert(array);
     alert(sum);
 }
 
