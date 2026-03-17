@@ -82,12 +82,10 @@ function employeeHandler() {
 
     }
 
-    alert(arr);
 }
 
 function studentArrayHandler()
 {
-
     let arr = [];
     arr.push ({
         name: "Oleksii",
@@ -211,9 +209,6 @@ function getBooksStatistics(library) {
     }
 }
 
-function deleteAgeFromStudent(arr) {
-    arr.map((x) => delete x.age )
-}
 
 function studentObjectHandler() {
     let student = ({
