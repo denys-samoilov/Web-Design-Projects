@@ -1,5 +1,7 @@
 function fruitArrayHandler() {
     let arr = ["Apple", "Strawberry", "Pear", "Grape"];
+
+    alert(arr);
     let index = arr.length - 1;
     arr.splice(index, 1);
     arr.splice(0, 0, "Pineapple");
@@ -21,6 +23,8 @@ function stringArrayHandler() {
             longest = s;
         }
     }
+
+    alert("Longest: " + longest);
 
     for(let i = 0; i < arr.length; i++) {
         if(!arr[i].includes("blue"))
@@ -59,7 +63,7 @@ function employeeHandler() {
         position: "Designer"
     });
 
-    arr.sort((a, b) => a.name.localeCompare(b.name));
+    arr.sort((a, b) => a.name - b.name).reverse();
 
     for(e of arr)
     {
