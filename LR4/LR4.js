@@ -63,7 +63,7 @@ function employeeHandler() {
 
     for(e of arr)
     {
-        alert(e.name + " " + e.age + " " + e.position);
+        alert("Sorted: " + e.name + " " + e.age + " " + e.position);
     }
 
     for(e of arr) {
@@ -82,28 +82,40 @@ function employeeHandler() {
 
     }
 
+    for(e of arr)
+    {
+        alert("Age > 30: " + e.name + " " + e.age + " " + e.position);
+    }
+
 }
 
-function studentArrayHandler()
+function studentHandler()
 {
     let arr = [];
+
     arr.push ({
         name: "Oleksii",
         age: 23,
-        grade: 100
+        course: 5
     });
 
     arr.push ({
         name: "Denys",
         age: 20,
-        grade: 90
+        course: 2
     });
 
     arr.push ({
         name: "Anna",
         age: 19,
-        grade: 80
+        course: 2
     });
+
+
+    for(st of arr) {
+        alert("Inserted: " + st.name + " " + st.age + " " + st.course);
+    }
+
 
     for(let i = 0; i < arr.length; i++) {
         if(arr[i].name === "Oleksii")
@@ -111,24 +123,34 @@ function studentArrayHandler()
             arr.splice(i, 1);
             i--;
         }
-
     }
 
-    let student4 = new Student("Nina", 21, 3);
 
-    arr.push(student4);
 
-    arr.sort((a, b) => a.age.localeCompare(b.age));
+
+    arr.push({
+        name: "Nina",
+        age: 21,
+        course: 3
+    });
+
+    for(st of arr) {
+        alert("Pushed: " + st.name + " " + st.age + " " + st.course);
+    }
+
+    arr.sort((a, b) => a.age - b.age);
+
+    for(st of arr) {
+        alert("Sorted + inserted: " + st.name + " " + st.age + " " + st.course);
+    }
 
     for(st of arr)
     {
         if(st.course === 3)
         {
-            alert (st.name + " " + st.age + " " + st.course)
+            alert ("Course 3: " + st.name + " " + st.age + " " + st.course)
         }
     }
-
-    alert(arr);
 }
 
 function numberArrayHandler() {
@@ -146,9 +168,11 @@ function numberArrayHandler() {
     
     arr.push(newNumArr);
 
+    alert("Combined Array: " + arr);
+
     arr.splice(0, 3);
 
-    alert(arr);
+    alert("After Splice: " + arr);
 }
 
 
@@ -158,11 +182,49 @@ function libraryManager()
 
     addBook (library, "Harry Potter", "J.K. Rowling", "Fantasy", 300);
 
+    addBook (library, "Star Wars", "George Lucas", "Sci-Fi", 400);
+
+
     for (book of library)
     {
         alert(book.title + " " + book.author + " " + book.genre + " " + book.pages + " " + book.isAvailable);
     }
 
+    addBook (library, "The Lord of the Rings", "J.R.R. Tolkien", "Fantasy", 500);
+
+    for (book of library)
+    {
+        alert("Library after new book added: " + book.title + " " + book.author + " " + book.genre + " " + book.pages + " " + book.isAvailable);
+    }
+
+    removeBookByName(library, "Harry Potter");
+
+    for (book of library)
+    {
+        alert("Library after book removed: " + book.title + " " + book.author + " " + book.genre + " " + book.pages + " " + book.isAvailable);
+    }
+
+    alert("Books by Tolkien: " + findBooksByAuthor(library, "Tolkien").map(b => b.title).join(", "));
+
+    toggleBookAvailability(library, "Star Wars");
+
+    for (book of library)
+    {
+        alert("Library after toggling availability: " + book.title + " " + book.author + " " + book.genre + " " + book.pages + " " + book.isAvailable);
+    }   
+
+    sortBooksByPages(library);
+
+    for (book of library)
+    {
+        alert("Library after sorting by pages: " + book.title + " " + book.author + " " + book.genre + " " + book.pages + " " + book.isAvailable);
+    }
+
+    let stats = getBooksStatistics(library);
+
+    alert("Total books: " + stats.totalBooks);
+    alert("Available books: " + stats.availableBooks);
+    alert("Unavailable books: " + stats.unavailableBooks);
 }
 
 function addBook(library, title, author, genre, pages){
@@ -178,11 +240,15 @@ function addBook(library, title, author, genre, pages){
 
 
 function removeBookByName(library, title) {
-    library = library.filter((b) => b.title !== title);
+    for (let i = 0; i < library.length; i++) {
+        if (library[i].title === title) {
+            library.splice(i, 1);
+        }
+    }
 }
 
 function findBooksByAuthor(library, author) {
-    return library.filter((b) => b.author === author);
+    return library.filter((b) => b.author.includes(author));
 }
 
 function toggleBookAvailability(library, title) {
@@ -194,7 +260,7 @@ function toggleBookAvailability(library, title) {
 }
 
 function sortBooksByPages(library) {
-    library.sort((a, b) => a.pages.localeCompare(b.pages));
+    library.sort((a, b) => a.pages - b.pages).reverse();
 }
 
 function getBooksStatistics(library) {
@@ -211,16 +277,16 @@ function getBooksStatistics(library) {
 
 
 function studentObjectHandler() {
-    let student = ({
+    let student = {
         name: "Denys",
         age: 20,
         course: 2
-    });
+    };
 
     student.topics = ["Web-Technologies", "NoSql", "Java"];
 
-    student.map (s => delete s.age);
+    delete student.age;
 
     alert(student.name + " " + student.age + " " + student.course + " " + student.topics);
-
 }
+
