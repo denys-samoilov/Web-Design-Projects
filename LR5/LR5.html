@@ -1,0 +1,62 @@
+<!DOCTYPE html>
+
+<head>
+    <title>LR5</title>
+    <script src="LR5.js"></script>
+    <link rel="stylesheet" href="LR5.css">
+</head>
+
+<body>
+    <h2>Task 1</h2>
+    <img src="img/regular.jpg" width="50px" id="lamp" class="lampOff regular">
+
+    <p><button onclick="ToggleLight()">Toggle Light</button></p>
+    <p><button onclick="ChangeTypeOfLight()">Change Type Of Light</button></p>
+
+    <select id="lampType">
+        <option value="regular">regular</option>
+        <option value="eco">eco</option>
+        <option value="led">led</option>
+    </select>
+
+    <p><button onclick="ChangeBrightness()">Change Brightness</button></p>
+
+    <h2>Task 2</h2>
+    <img src = "img/traffic lights/red.jpg" width="50px" id = "trafficLight">
+    <p id = "trafficLightText">Red</p>
+
+    <p><button onclick="startTrafficLights(5000, 3000, 7000, 500)">Start Traffic Lights</button></p>
+    <p><button id="buttonNext">Next</button></p>
+    <p><button onclick="inputCustomValues()">Input Custom Values</button></p>
+    <p><button onclick="stopTrafficLights()">Stop Traffic Lights</button></p>
+
+    <h2>Task 3</h2>
+    <p id="clock"></p>
+    <p><button onclick="clockHandler()">Start Clock</button></p>
+
+    <p><button onclick="timer()">Start Timer</button></p>
+    <input type="date" id="calendar">
+    <input type="time" id="time">
+
+    <p><button onclick="getDate()">Get Date</button></p>
+    <input type="date" id="dateCalendar">
+
+    <p><button onclick="birthdayChecker()">Birthday Checker</button></p>
+    <input type="date" id="birthdayCalendar">
+
+    <h2>Task 4</h2>
+    <p><button onclick = "addProduct(0, 'Laptop', 1500, 5)">Add laptop</button></p>
+    <p><button onclick = "addProduct(1, 'Phone', 1500, 5)">Add phone</button></p>
+
+    <p><button onclick = "viewProduct(0)">View Product</button></p>
+    <p><button onclick = "viewProduct(1)">View Product</button></p>
+
+    <p><button onclick = "updateProduct(0, 'Laptop', 1500, 4)">Update Product</button></p>
+
+    <p><button onclick = "deleteProduct(0)">Delete Product</button></p>
+
+    <p><button onclick = "makeOrder(0)">Make Order</button></p></p>
+
+    <p><button onclick = "viewHistory()">View History</button></p>    
+
+</body>

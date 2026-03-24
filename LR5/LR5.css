@@ -1,0 +1,7 @@
+.lampOff {
+    display: none;
+}
+
+.lampOn {
+    display: block;
+}
