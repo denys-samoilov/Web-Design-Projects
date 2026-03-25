@@ -6,10 +6,13 @@ let trafficTimeoutId;
 
 function ToggleLight() {
 
-    if (lamp.classList.contains('lampOff')) {
+    if (lamp.classList.contains('lampOff')) 
+    {
         lamp.classList.remove('lampOff');
         lamp.classList.add('lampOn');
-    } else {
+    } 
+    else 
+    {
         lamp.classList.remove('lampOn');
         lamp.classList.add('lampOff');
     }
@@ -144,25 +147,28 @@ function stopTrafficLights() {
 
 function clockHandler()
 {
-    let clock = document.getElementById("clock");
-    let now = new Date();
-    let hours = now.getHours();
-    let minutes = now.getMinutes();
-    let seconds = now.getSeconds();
-
-    let timeString = "";
-
-    if (seconds % 2 == 0)
+    function clockTicker()
     {
-        timeString = hours + ":" + minutes + ":" + seconds;
-    }
-    else
-    {
-        timeString = hours + ":" + minutes;
-    }
-    clock.textContent = timeString;
+        let clock = document.getElementById("clock");
+        let now = new Date();
+        let hours = now.getHours();
+        let minutes = now.getMinutes();
+        let seconds = now.getSeconds();
 
-    setTimeout(clockHandler, 1000);
+        let timeString = "";
+
+        if (seconds % 2 == 0)
+        {
+            timeString = hours + ":" + minutes + ":" + seconds;
+        }
+        else
+        {
+            timeString = hours + ":" + minutes;
+        }
+        clock.textContent = timeString;
+    }
+
+    setInterval(clockTicker, 1000);
 }
 
 function timer() {

@@ -9,6 +9,7 @@ function fruitArrayHandler() {
 
     arr.sort().reverse();
 
+    alert(arr);
 
     let found = arr.indexOf("Apple");
     alert("Index of Apple: " + found);
@@ -128,9 +129,6 @@ function studentHandler()
             i--;
         }
     }
-
-
-
 
     arr.push({
         name: "Nina",
@@ -269,8 +267,8 @@ function sortBooksByPages(library) {
 
 function getBooksStatistics(library) {
     let totalBooks = library.length;
-    let availableBooks = library.filter(book => book.isAvailable).length;
-    let unavailableBooks = totalBooks - availableBooks;
+    let availableBooks = library.filter(book => book.isAvailable === true).length;
+    let unavailableBooks = library.filter(book => book.isAvailable === false).length;
 
     return {
         totalBooks,
