@@ -1,5 +1,4 @@
 let lamp = document.getElementById("lamp");
-
 let inactiveTimer;
 
 let trafficTimeoutId;
@@ -353,6 +352,22 @@ function viewProductDetails(id) {
     }
 
     alert("Details for " + product.name + ": " + productDetails.get(product));
+}
+
+function deleteProductDetails(id) {
+    if (!productsMap.has(id)) {
+        alert("Product not found");
+        return;
+    }
+
+    let product = productsMap.get(id);
+    if (!productDetails.has(product)) {
+        alert("No details found for this product");
+        return;
+    }
+
+    productDetails.delete(product);
+    alert("Details deleted");
 }
 
 function addHistory(id){
