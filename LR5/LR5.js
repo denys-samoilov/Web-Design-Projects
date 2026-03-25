@@ -337,6 +337,7 @@ function addProductDetails(id, details) {
     }
 
     productDetails.set(productsMap.get(id), details);
+    alert("Details added");
 }
 
 function viewProductDetails(id) {
@@ -351,7 +352,7 @@ function viewProductDetails(id) {
         return;
     }
 
-    alert(`Details for ${product.name}: ${productDetails.get(product)}`);
+    alert("Details for " + product.name + ": " + productDetails.get(product));
 }
 
 function addHistory(id){
