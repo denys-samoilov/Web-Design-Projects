@@ -60,37 +60,36 @@ function startTrafficLights(redInterval, yellowInterval, greenInterval, blinkInt
     let buttonNext = document.getElementById("buttonNext");
     let trafficLightText = document.getElementById("trafficLightText");
 
-    let current = 'red';
+    let nextColor = 'red';
     let blinkCount = 0;
 
     stopTrafficLights();
 
     function changeLight() {
-        if (current === 'red') {
+        if (nextColor === 'red') {
             trafficLight.src = 'img/traffic lights/red.jpg';
-            current = 'yellow';
+            nextColor = 'yellow';
             trafficLightText.textContent = "Red";
             trafficTimeoutId = setTimeout(changeLight, redInterval); 
         } 
-        else if (current === 'yellow') {
+        else if (nextColor === 'yellow') {
             trafficLight.src = 'img/traffic lights/yellow.jpg';
-            current = 'green';
+            nextColor = 'green';
             trafficLightText.textContent = "Yellow";
             trafficTimeoutId = setTimeout(changeLight, yellowInterval);
         } 
-        else if (current === 'green') {
+        else if (nextColor === 'green') {
             trafficLight.src = 'img/traffic lights/green.jpg';
-            current = 'yellowBlink';
+            nextColor = 'yellowBlink';
             blinkCount = 0; 
             trafficLightText.textContent = "Green";
             trafficTimeoutId = setTimeout(changeLight, greenInterval);
         } 
-        else if (current === 'yellowBlink') {
+        else if (nextColor === 'yellowBlink') {
             switch(blinkCount)
             {
                 case 0:
                 case 2:
-                case 4: 
                 {
                     trafficLight.src = 'img/traffic lights/yellow.jpg';
                     blinkCount++;
@@ -109,10 +108,11 @@ function startTrafficLights(redInterval, yellowInterval, greenInterval, blinkInt
                     break;
                 }
 
-                case 5:    
+                case 4: 
                 {
-                    current = 'red'; 
+                    trafficLight.src = 'img/traffic lights/yellow.jpg';
                     trafficLightText.textContent = "Yellow";
+                    nextColor = 'red'; 
                     trafficTimeoutId = setTimeout(changeLight, blinkInterval);
                 }
             }
@@ -138,9 +138,9 @@ function inputCustomValues() {
 function stopTrafficLights() {
     if (trafficTimeoutId) {
         clearTimeout(trafficTimeoutId);
-        trafficTimeoutId = null; 
     }
     document.getElementById("trafficLight").src = 'img/traffic lights/red.jpg';
+    document.getElementById("trafficLightText").textContent = "Red";
 }
 
 
