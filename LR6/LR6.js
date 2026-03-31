@@ -75,7 +75,7 @@ const openEditModal = (productId) => {
     let product = products.find(product => product.id === productId);
 
     editName.value = product.name;
-    editPrice.value = product.price;
+    editPrice.value = product.price.amount;
     editCategory.value = product.category;
     editImage.value = product.image;
 
@@ -95,10 +95,10 @@ editSubmitBtn.addEventListener('click', () => {
 
     updateProduct(editingProductId, productData);
 
-    document.querySelector('input[name="edit-name"]').value = '';
-    document.querySelector('input[name="edit-price"]').value = '';
-    document.querySelector('input[name="edit-category"]').value = '';
-    document.querySelector('input[name="edit-image"]').value = '';
+    editName.value = '';
+    editPrice.value = '';
+    editCategory.value = '';
+    editImage.value = '';
 
     editingProductId = null; 
     editModal.style.display = 'none';
@@ -122,10 +122,10 @@ editCancelBtn.addEventListener('click', () => {
     };
     addProduct(productData);
 
-    document.querySelector('input[name="add-name"]').value = '';
-    document.querySelector('input[name="add-price"]').value = '';
-    document.querySelector('input[name="add-category"]').value = '';
-    document.querySelector('input[name="add-image"]').value = '';
+    addName.value = '';
+    addPrice.value = '';
+    addCategory.value = '';
+    addImage.value = '';
 
     addModal.style.display = 'none';
     });
@@ -138,6 +138,10 @@ filterDiv.addEventListener('click', (event) => {
     if (event.target.tagName === 'BUTTON') {
         currentFilter = event.target.textContent;
         filterProducts(currentFilter);
+
+        let filteredProds = filterProducts(currentFilter);
+        let sortedProds = sortProducts(filteredProds, currentSort);
+        refreshProductList(sortedProds);
     }
 });
 
@@ -149,7 +153,9 @@ sortDiv.addEventListener('click', (event) => {
         else if(text.includes("updated")) currentSort = "updated";
         else currentSort = ""; // reset sort
 
-        filterProducts(currentFilter);
+        let filteredProds = filterProducts(currentFilter);
+        let sortedProds = sortProducts(filteredProds, currentSort);
+        refreshProductList(sortedProds);
     }
 });
 
@@ -160,14 +166,15 @@ const filterProducts = (category) => {
         handledProducts = sortProducts(handledProducts, currentSort);
     }
 
-    if (category === 'All') {
-        refreshProductList(handledProducts);
-    } else {
+    if (category !== 'All') 
+    {
         handledProducts = products.filter(product => product.category === category);
         refreshProductList(handledProducts);
     }
-    return category;
-}
+    return handledProducts;
+
+    }
+
 
 
  const addProduct = (productData) => {
@@ -187,6 +194,10 @@ const filterProducts = (category) => {
 
    let categories = products.map(product => product.category);
    refreshFilters(categories);
+
+    let filteredProds = filterProducts(currentFilter);
+    let sortedProds = sortProducts(filteredProds, currentSort);
+    refreshProductList(sortedProds);
     // оновити список на ui
     // оновити фільтри
     // оновити ціну
@@ -208,18 +219,17 @@ const updateProduct = (productId, productData) => {
             };
         }
 
-        filterProducts(currentFilter);
-        return product;
-    });
 
+
+        
+    });
+    let filteredProds = filterProducts(currentFilter);
+    let sortedProds = sortProducts(filteredProds, currentSort);
+    refreshProductList(sortedProds);
+    return products.find(product => product.id === productId);
    // оновити список на ui
     // оновити фільтри
     // оновити ціну
-
-    filterProducts(currentFilter);
-    let categories = products.map(product => product.category);
-    refreshFilters(categories);
-    return products.find(product => product.id === productId);
 };
 
 const refreshFilters = (categories) => {
@@ -243,7 +253,6 @@ const refreshFilters = (categories) => {
     if (!productToDelete) return null;
 
     products = products.filter(product => product.id !== productId);
-    refreshProductList();
     // оновити список на ui
     // оновити фільтри
     // оновити ціну
@@ -268,8 +277,8 @@ const createProductCard = (product) => {
             <div class="product-price">${product.price.amount}${product.price.currency}</div>
             <div class="product-category">${product.category}</div>
             <div class="product-actions">
-                <button class="edit-btn">Редагувати</button>
-                <button class="delete-btn">Видалити</button>
+                <button class="edit-btn">Edit</button>
+                <button class="delete-btn">Delete</button>
             </div>
         </div>
     `;
@@ -310,6 +319,8 @@ const refreshProductList = (filteredProducts) => {
         totalPrice.innerHTML = `Total Price: ${sum}`;
 
     });
+
+    return filteredProducts;
 }
 
 const cleanFieldValues = () => {
@@ -321,13 +332,13 @@ const cleanFieldValues = () => {
 const sortProducts = (products, sortType) => {
     let sorted = [...products];
     if(sortType === 'price'){
-        sorted.sort((a, b) => a.price - b.price);
+        sorted.sort((a, b) => b.price.amount - a.price.amount);
     }
     else if(sortType === 'created'){
-        sorted.sort((a, b) => new Date(a.createdAt) - new Date(b.createdAt));
+        sorted.sort((a, b) => new Date(b.createdAt) - new Date(a.createdAt));
     }
     else if(sortType === 'updated'){
-        sorted.sort((a, b) => new Date(a.updatedAt) - new Date(b.updatedAt));
+        sorted.sort((a, b) => new Date(b.updatedAt) - new Date(a.updatedAt));
     }
     return sorted;
 }
