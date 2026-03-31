@@ -253,6 +253,10 @@ const refreshFilters = (categories) => {
     if (!productToDelete) return null;
 
     products = products.filter(product => product.id !== productId);
+
+    let filteredProds = filterProducts(currentFilter);
+    let sortedProds = sortProducts(filteredProds, currentSort);
+    refreshProductList(sortedProds);
     // оновити список на ui
     // оновити фільтри
     // оновити ціну
@@ -260,9 +264,7 @@ const refreshFilters = (categories) => {
     return productToDelete;
 };
 
-const deleteProductWithAnimation = (productId) => {
-    deleteProduct(productId);
-}
+
 
 const createProductCard = (product) => {
     const card = document.createElement('div');
@@ -292,7 +294,7 @@ const createProductCard = (product) => {
     });
 
     deleteBtn.addEventListener('click', () => {
-        deleteProductWithAnimation(product.id);
+        deleteProduct(product.id);
     });
 
     return card;
@@ -343,8 +345,11 @@ const sortProducts = (products, sortType) => {
     return sorted;
 }
 
-refreshProductList(products);
-cleanFieldValues();
+const initApp = () => {
+    refreshProductList(products);
+}
+
+initApp();
 
 
 
