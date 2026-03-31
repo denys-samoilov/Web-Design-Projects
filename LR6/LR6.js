@@ -36,16 +36,20 @@
  let addModal = document.querySelector('#add-modal');
  let addName = document.querySelector('[name = "add-name"]');
  let addPrice = document.querySelector('[name = "add-price"]');
+ let addCurrency = document.querySelector('[name = "add-currency"]');
  let addCategory = document.querySelector('[name = "add-category"]');
  let addImage = document.querySelector('[name = "add-image"]');
  let addSubmitBtn = document.querySelector('[name = "add-submit-btn"]');
+ let addCancelBtn = document.querySelector('[name = "add-cancel-btn"]');
 
  let editModal = document.querySelector('#edit-modal');
  let editName = document.querySelector('[name = "edit-name"]');
  let editPrice = document.querySelector('[name = "edit-price"]');
+ let editCurrency = document.querySelector('[name = "edit-currency"]');
  let editCategory = document.querySelector('[name = "edit-category"]');
  let editImage = document.querySelector('[name = "edit-image"]');
  let editSubmitBtn = document.querySelector('[name = "edit-submit-btn"]');
+ let editCancelBtn = document.querySelector('[name = "edit-cancel-btn"]');
 
  let productCards = document.querySelector('#product-cards');
 
@@ -82,13 +86,25 @@ const openEditModal = (productId) => {
 editSubmitBtn.addEventListener('click', () => {
     let productData = {
         productName: editName.value,
-        productPrice: editPrice.value,
+        productPrice: {
+            amount: editPrice.value,
+            currency: editCurrency.value},
         productCategory: editCategory.value,
         productImage: editImage.value
     };
 
     updateProduct(editingProductId, productData);
+
+    document.querySelector('input[name="edit-name"]').value = '';
+    document.querySelector('input[name="edit-price"]').value = '';
+    document.querySelector('input[name="edit-category"]').value = '';
+    document.querySelector('input[name="edit-image"]').value = '';
+
     editingProductId = null; 
+    editModal.style.display = 'none';
+});
+
+editCancelBtn.addEventListener('click', () => {
     editModal.style.display = 'none';
 });
 
@@ -96,7 +112,9 @@ editSubmitBtn.addEventListener('click', () => {
     let productData = {
         productId: generateId(),
         productName: addName.value,
-        productPrice: addPrice.value,
+        productPrice: {
+            amount: addPrice.value, 
+            currency: addCurrency.value},
         productCategory: addCategory.value,
         productImage: addImage.value,
         productCreatedAt: getCurrentDate(),
@@ -104,7 +122,16 @@ editSubmitBtn.addEventListener('click', () => {
     };
     addProduct(productData);
 
+    document.querySelector('input[name="add-name"]').value = '';
+    document.querySelector('input[name="add-price"]').value = '';
+    document.querySelector('input[name="add-category"]').value = '';
+    document.querySelector('input[name="add-image"]').value = '';
+
     addModal.style.display = 'none';
+    });
+
+    addCancelBtn.addEventListener('click', () => {
+        addModal.style.display = 'none';
     });
 
 filterDiv.addEventListener('click', (event) => {
@@ -238,7 +265,7 @@ const createProductCard = (product) => {
         <div class="product-info">
             <div class="product-id">ID: ${product.id}</div>
             <h3 class="product-name">${product.name}</h3>
-            <div class="product-price">${product.price}</div>
+            <div class="product-price">${product.price.amount}${product.price.currency}</div>
             <div class="product-category">${product.category}</div>
             <div class="product-actions">
                 <button class="edit-btn">Редагувати</button>
@@ -277,7 +304,7 @@ const refreshProductList = (filteredProducts) => {
     totalPrice.innerHTML = ``;
 
     filteredProducts.forEach(product => {
-        sum += parseFloat(product.price);
+        sum += parseFloat(product.price.amount);
         let productCard = createProductCard(product);
         productCards.appendChild(productCard);
         totalPrice.innerHTML = `Total Price: ${sum}`;
@@ -286,15 +313,9 @@ const refreshProductList = (filteredProducts) => {
 }
 
 const cleanFieldValues = () => {
-    document.querySelector('input[name="add-name"]').value = '';
-    document.querySelector('input[name="add-price"]').value = '';
-    document.querySelector('input[name="add-category"]').value = '';
-    document.querySelector('input[name="add-image"]').value = '';
+    
 
-    document.querySelector('input[name="edit-name"]').value = '';
-    document.querySelector('input[name="edit-price"]').value = '';
-    document.querySelector('input[name="edit-category"]').value = '';
-    document.querySelector('input[name="edit-image"]').value = '';
+    
 }
 
 const sortProducts = (products, sortType) => {
