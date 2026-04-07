@@ -1,29 +1,9 @@
 'use strict';
 
-/*
-1. create static markup (layout + product list), css
-2. create static modal
-3. create static snack bar
-2. create mock data
-3. js-logic
-3.1 init app function - call all functions to initialize app
-3.2 collect your DOM Elements (js-prefix-name selector)
-3.3 create utils functions (generateId, getCurrentDate)
-3.3 calculateTotalPrice, formatPrice, updateTotalPrice
-3.4 getCategories from products
-3.5 updateFilterButtons - depends on categories, toggle buttons active style
-3.6 filterProducts(category) - depends on categories
-3.7 resetFilter
-3.8 sortProducts(sortBy) + resetSort
-3.9 updateSortButtons (toggle buttons active style)
-3.10 func for ui showSnackbar + setTimeout, toggleModal(show = true, editMode = false)
-*/
-
- // Core Functions
  let products = [];
  let editingProductId = null;
  let currentFilter = "All";
- let currentSort = "price";
+ let currentSort = "";
 
  let totalPrice = document.querySelector('#total-price');
 
@@ -33,6 +13,7 @@
 
  let addProductBtn = document.querySelector('#addProductButton');
 
+ let addForm = document.querySelector('#add-form');
  let addModal = document.querySelector('#add-modal');
  let addName = document.querySelector('[name = "add-name"]');
  let addPrice = document.querySelector('[name = "add-price"]');
@@ -42,6 +23,7 @@
  let addSubmitBtn = document.querySelector('[name = "add-submit-btn"]');
  let addCancelBtn = document.querySelector('[name = "add-cancel-btn"]');
 
+ let editForm = document.querySelector('#edit-form');
  let editModal = document.querySelector('#edit-modal');
  let editName = document.querySelector('[name = "edit-name"]');
  let editPrice = document.querySelector('[name = "edit-price"]');
@@ -83,7 +65,9 @@ const openEditModal = (productId) => {
     return product;
 };
 
-editSubmitBtn.addEventListener('click', () => {
+editForm.addEventListener('submit', (event) => {
+    event.preventDefault();
+
     let productData = {
         productName: editName.value,
         productPrice: {
@@ -108,27 +92,27 @@ editCancelBtn.addEventListener('click', () => {
     editModal.style.display = 'none';
 });
 
- addSubmitBtn.addEventListener('click', () => {
+ addForm.addEventListener('submit', (event) => {
+    event.preventDefault(); 
+
     let productData = {
         productId: generateId(),
         productName: addName.value,
         productPrice: {
-            amount: addPrice.value, 
-            currency: addCurrency.value},
+            amount: parseFloat(addPrice.value),
+            currency: addCurrency.value
+        },
         productCategory: addCategory.value,
         productImage: addImage.value,
         productCreatedAt: getCurrentDate(),
         productUpdatedAt: getCurrentDate()
     };
+
     addProduct(productData);
 
-    addName.value = '';
-    addPrice.value = '';
-    addCategory.value = '';
-    addImage.value = '';
-
+    addForm.reset();
     addModal.style.display = 'none';
-    });
+});
 
     addCancelBtn.addEventListener('click', () => {
         addModal.style.display = 'none';
@@ -137,7 +121,6 @@ editCancelBtn.addEventListener('click', () => {
 filterDiv.addEventListener('click', (event) => {
     if (event.target.tagName === 'BUTTON') {
         currentFilter = event.target.textContent;
-        filterProducts(currentFilter);
 
         let filteredProds = filterProducts(currentFilter);
         let sortedProds = sortProducts(filteredProds, currentSort);
@@ -151,7 +134,7 @@ sortDiv.addEventListener('click', (event) => {
         if(text.includes("price")) currentSort = "price";
         else if(text.includes("created")) currentSort = "created";
         else if(text.includes("updated")) currentSort = "updated";
-        else currentSort = ""; // reset sort
+        else currentSort = "";
 
         let filteredProds = filterProducts(currentFilter);
         let sortedProds = sortProducts(filteredProds, currentSort);
@@ -198,9 +181,6 @@ const filterProducts = (category) => {
     let filteredProds = filterProducts(currentFilter);
     let sortedProds = sortProducts(filteredProds, currentSort);
     refreshProductList(sortedProds);
-    // оновити список на ui
-    // оновити фільтри
-    // оновити ціну
 
     return newProduct;
 };
@@ -227,9 +207,6 @@ const updateProduct = (productId, productData) => {
     let sortedProds = sortProducts(filteredProds, currentSort);
     refreshProductList(sortedProds);
     return products.find(product => product.id === productId);
-   // оновити список на ui
-    // оновити фільтри
-    // оновити ціну
 };
 
 const refreshFilters = (categories) => {
@@ -257,9 +234,6 @@ const refreshFilters = (categories) => {
     let filteredProds = filterProducts(currentFilter);
     let sortedProds = sortProducts(filteredProds, currentSort);
     refreshProductList(sortedProds);
-    // оновити список на ui
-    // оновити фільтри
-    // оновити ціну
 
     return productToDelete;
 };
@@ -272,12 +246,12 @@ const createProductCard = (product) => {
     card.dataset.id = product.id;
 
     card.innerHTML = `
-        <img src="${product.image}" alt="${product.name}" class="product-image">
+        <img src="${product.image}"  class="product-image">
         <div class="product-info">
-            <div class="product-id">ID: ${product.id}</div>
+            <p class="product-id">ID: ${product.id}</p>
             <h3 class="product-name">${product.name}</h3>
-            <div class="product-price">${product.price.amount}${product.price.currency}</div>
-            <div class="product-category">${product.category}</div>
+            <p class="product-price">${product.price.amount}${product.price.currency}</p>
+            <p class="product-category">${product.category}</p>
             <div class="product-actions">
                 <button class="edit-btn">Edit</button>
                 <button class="delete-btn">Delete</button>
@@ -294,8 +268,12 @@ const createProductCard = (product) => {
     });
 
     deleteBtn.addEventListener('click', () => {
+    card.classList.add('removing');
+
+    setTimeout(() => {
         deleteProduct(product.id);
-    });
+    }, 300);
+});
 
     return card;
 };
@@ -304,9 +282,6 @@ const refreshProductList = (filteredProducts) => {
     productCards.innerHTML = '';
 
     snackbar.innerHTML = getEmptyListMessage();
-    
-    
-
 
     let categories = filteredProducts.map(product => product.category);
     refreshFilters(categories)
@@ -315,26 +290,35 @@ const refreshProductList = (filteredProducts) => {
     totalPrice.innerHTML = ``;
 
     filteredProducts.forEach(product => {
-        sum += parseFloat(product.price.amount);
+        sum += parseFloat(getPriceInUah(product.price).amount);
         let productCard = createProductCard(product);
         productCards.appendChild(productCard);
-        totalPrice.innerHTML = `Total Price: ${sum}`;
-
     });
+    totalPrice.innerHTML = `Total Price: ${sum}`;
+
+
+
 
     return filteredProducts;
 }
 
-const cleanFieldValues = () => {
-    
+const getPriceInUah = (price) => {
+    let amount = price.amount;
+    let currency = price.currency;
 
-    
+    switch(currency){
+        case "EUR": { amount = amount * 50; break; }
+        case "USD": { amount = amount * 43.5; break; }
+        default: {break;}
+    }
+
+    return { amount, currency };
 }
 
 const sortProducts = (products, sortType) => {
     let sorted = [...products];
     if(sortType === 'price'){
-        sorted.sort((a, b) => b.price.amount - a.price.amount);
+        sorted.sort((a, b) => getPriceInUah(b.price).amount - getPriceInUah(a.price).amount);
     }
     else if(sortType === 'created'){
         sorted.sort((a, b) => new Date(b.createdAt) - new Date(a.createdAt));

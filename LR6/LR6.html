@@ -18,32 +18,39 @@
         <button name="sort-reset-btn">Reset sort</button>
     </div>
     <button id="addProductButton">Add product</button>
+
     <dialog class="modal" id="add-modal">
-        <input name="add-name" placeholder="Name" required><br>
-        <input name="add-price" type="number" placeholder="Price" required>
-        <select name="add-currency" placeholder="currency" required>
-            <option value="USD">USD</option>
-            <option value="EUR">EUR</option>
-            <option value="UAH">UAH</option>
-        </select><br>
-        <input name="add-category" placeholder="category" required><br>
-        <input name="add-image" placeholder="URL"><br>
-        <button name="add-submit-btn">Save</button>
-        <button name="add-cancel-btn">Cancel</button>
+        <form id="add-form">
+            <input name="add-name" placeholder="Name" required><br>
+            <input name="add-price" type="number" placeholder="Price" required>
+            <select name="add-currency" required>
+                <option value="USD">USD</option>
+                <option value="EUR">EUR</option>
+                <option value="UAH">UAH</option>
+            </select><br>
+            <input name="add-category" placeholder="category" required><br>
+            <input name="add-image" placeholder="URL"><br>
+
+            <button type="submit">Save</button>
+            <button type="button" name="add-cancel-btn">Cancel</button>
+        </form>
     </dialog>
 
     <dialog class="modal" id="edit-modal">
+        <form id="edit-form">
         <input name="edit-name" placeholder="Name" required><br>
         <input name="edit-price" type="number" placeholder="Price" required>
         <select name="edit-currency" placeholder="currency" required>
             <option value="USD">USD</option>
-            <option value="EUR">EUR</option>
+            <option value="EUR">EUR</option> 
             <option value="UAH">UAH</option>
         </select><br>
         <input name="edit-category" placeholder="category" required><br>
         <input name="edit-image" placeholder="URL"><br>
-        <button name="edit-submit-btn">Save</button>
+
+        <button type="submit">Save</button>
         <button name="edit-cancel-btn">Cancel</button>
+        </form>
     </dialog>
 
     <div id="product-cards">
