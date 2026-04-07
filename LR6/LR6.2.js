@@ -104,11 +104,11 @@ let editTask = (index) => {
 let sortTasks = (sortBy) => {
     let sortedTasks = [...tasks];
     if (sortBy === "name") {
-        sortedTasks.sort((a, b) => a.name.localeCompare(b.name));
+        sortedTasks.sort((a, b) => b.name.localeCompare(a.name));
     } else if (sortBy === "dateOfCreating") {
-        sortedTasks.sort((a, b) => new Date(a.dateOfCreating) - new Date(b.dateOfCreating));
+        sortedTasks.sort((a, b) => new Date(b.dateOfCreating) - new Date(a.dateOfCreating));
     } else if (sortBy === "dateOfUpdating") {
-        sortedTasks.sort((a, b) => new Date(a.dateOfUpdating) - new Date(b.dateOfUpdating));
+        sortedTasks.sort((a, b) => new Date(b.dateOfUpdating) - new Date(a.dateOfUpdating));
     }
     return sortedTasks;
 }
