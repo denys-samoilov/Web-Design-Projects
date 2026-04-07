@@ -37,7 +37,7 @@
 
  let snackbar = document.querySelector('#snackbar');
  
-const getEmptyListMessage = () => products.length === 0 ? "List of products is empty. Add new product" : "";
+ let getEmptyListMessage = () => products.length === 0 ? "List of products is empty. Add new product" : "";
 
 
  let generateId = () => {
@@ -52,7 +52,7 @@ const getEmptyListMessage = () => products.length === 0 ? "List of products is e
     addModal.style.display = 'block';
     });
 
-const openEditModal = (productId) => {
+let openEditModal = (productId) => {
     editingProductId = productId; 
     let product = products.find(product => product.id === productId);
 
@@ -142,7 +142,7 @@ sortDiv.addEventListener('click', (event) => {
     }
 });
 
-const filterProducts = (category) => {
+let filterProducts = (category) => {
 
     let handledProducts = products;
     if(currentSort !== null){
@@ -160,9 +160,9 @@ const filterProducts = (category) => {
 
 
 
- const addProduct = (productData) => {
+ let addProduct = (productData) => {
 
-    const newProduct = {
+    let newProduct = {
         id: productData.productId,
         name: productData.productName,
         price: productData.productPrice,
@@ -186,7 +186,7 @@ const filterProducts = (category) => {
 };
 
 
-const updateProduct = (productId, productData) => {
+let updateProduct = (productId, productData) => {
     products = products.map(product => {
         if (product.id === productId) {
             return {
@@ -209,7 +209,7 @@ const updateProduct = (productId, productData) => {
     return products.find(product => product.id === productId);
 };
 
-const refreshFilters = (categories) => {
+let refreshFilters = (categories) => {
     let uniqueCategories = new Set(categories);
 
     filterDiv.innerHTML = '<button name="filter-all-btn">All</button>';
@@ -224,8 +224,8 @@ const refreshFilters = (categories) => {
     return uniqueCategories;
 }
 
- const deleteProduct = (productId) => {
-    const productToDelete = products.find(product => product.id === productId);
+ let deleteProduct = (productId) => {
+    let productToDelete = products.find(product => product.id === productId);
 
     if (!productToDelete) return null;
 
@@ -240,8 +240,8 @@ const refreshFilters = (categories) => {
 
 
 
-const createProductCard = (product) => {
-    const card = document.createElement('div');
+let createProductCard = (product) => {
+    let card = document.createElement('div');
     card.className = 'product-card';
     card.dataset.id = product.id;
 
@@ -259,8 +259,8 @@ const createProductCard = (product) => {
         </div>
     `;
 
-    const editBtn = card.querySelector('.edit-btn');
-    const deleteBtn = card.querySelector('.delete-btn');
+    let editBtn = card.querySelector('.edit-btn');
+    let deleteBtn = card.querySelector('.delete-btn');
 
     editBtn.addEventListener('click', () => {
         editModal.style.display = 'block';
@@ -278,7 +278,7 @@ const createProductCard = (product) => {
     return card;
 };
 
-const refreshProductList = (filteredProducts) => {
+let refreshProductList = (filteredProducts) => {
     productCards.innerHTML = '';
 
     snackbar.innerHTML = getEmptyListMessage();
@@ -302,7 +302,7 @@ const refreshProductList = (filteredProducts) => {
     return filteredProducts;
 }
 
-const getPriceInUah = (price) => {
+let getPriceInUah = (price) => {
     let amount = price.amount;
     let currency = price.currency;
 
@@ -315,7 +315,7 @@ const getPriceInUah = (price) => {
     return { amount, currency };
 }
 
-const sortProducts = (products, sortType) => {
+let sortProducts = (products, sortType) => {
     let sorted = [...products];
     if(sortType === 'price'){
         sorted.sort((a, b) => getPriceInUah(b.price).amount - getPriceInUah(a.price).amount);
@@ -329,7 +329,7 @@ const sortProducts = (products, sortType) => {
     return sorted;
 }
 
-const initApp = () => {
+let initApp = () => {
     refreshProductList(products);
 }
 

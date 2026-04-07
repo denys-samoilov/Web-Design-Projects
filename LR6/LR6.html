@@ -1,64 +1,97 @@
 <!DOCTYPE html>
+<html lang="en">
 <head>
     <title>LR6</title>
     <link rel="stylesheet" href="LR6.css">
 </head>
 <body>
-    <h2 id="total-price">Total Price: </h2>
-    
-    <div id = "filter">
-        <button name="filter-all-btn">All</button>"
-    </div>
 
+    <header>
+        <h1>Product Manager</h1>
+        <h2 id="total-price">Total Price:</h2>
+    </header>
 
-    <div id = "sort">
-        <button name="sort-price-btn">Sort by price</button>
-        <button name="sort-created-btn">Sort by created date</button> 
-        <button name="sort-updated-btn">Sort by updated date</button>   
-        <button name="sort-reset-btn">Reset sort</button>
-    </div>
-    <button id="addProductButton">Add product</button>
+    <nav>
+        <section>
+            <h3>Filter</h3>
+            <div id="filter">
+                <button name="filter-all-btn">All</button>
+            </div>
+        </section>
+
+        <section aria-label="Sort products">
+            <h3>Sort</h3>
+            <div id="sort">
+                <button name="sort-price-btn">Sort by price</button>
+                <button name="sort-created-btn">Sort by created date</button> 
+                <button name="sort-updated-btn">Sort by updated date</button>   
+                <button name="sort-reset-btn">Reset sort</button>
+            </div>
+        </section>
+    </nav>
+
+    <main>
+        <section>
+            <button id="addProductButton">Add product</button>
+        </section>
+
+        <section>
+            <h3>Products</h3>
+
+            <div id="product-cards">
+            </div>
+
+            <p id="snackbar"></p>
+        </section>
+
+    </main>
 
     <dialog class="modal" id="add-modal">
         <form id="add-form">
-            <input name="add-name" placeholder="Name" required><br>
-            <input name="add-price" type="number" placeholder="Price" required>
-            <select name="add-currency" required>
-                <option value="USD">USD</option>
-                <option value="EUR">EUR</option>
-                <option value="UAH">UAH</option>
-            </select><br>
-            <input name="add-category" placeholder="category" required><br>
-            <input name="add-image" placeholder="URL"><br>
+            <fieldset>
+                <legend>Add product</legend>
 
-            <button type="submit">Save</button>
-            <button type="button" name="add-cancel-btn">Cancel</button>
+                <input name="add-name" placeholder="Name" required><br>
+                <input name="add-price" type="number" placeholder="Price" required>
+
+                <select name="add-currency" required>
+                    <option value="USD">USD</option>
+                    <option value="EUR">EUR</option>
+                    <option value="UAH">UAH</option>
+                </select><br>
+
+                <input name="add-category" placeholder="Category" required><br>
+                <input name="add-image" placeholder="Image URL"><br>
+
+                <button type="submit">Save</button>
+                <button type="button" name="add-cancel-btn">Cancel</button>
+            </fieldset>
         </form>
     </dialog>
 
     <dialog class="modal" id="edit-modal">
         <form id="edit-form">
-        <input name="edit-name" placeholder="Name" required><br>
-        <input name="edit-price" type="number" placeholder="Price" required>
-        <select name="edit-currency" placeholder="currency" required>
-            <option value="USD">USD</option>
-            <option value="EUR">EUR</option> 
-            <option value="UAH">UAH</option>
-        </select><br>
-        <input name="edit-category" placeholder="category" required><br>
-        <input name="edit-image" placeholder="URL"><br>
+            <fieldset>
+                <legend>Edit product</legend>
 
-        <button type="submit">Save</button>
-        <button name="edit-cancel-btn">Cancel</button>
+                <input name="edit-name" required><br>
+                <input name="edit-price" type="number" required>
+
+                <select name="edit-currency" required>
+                    <option value="USD">USD</option>
+                    <option value="EUR">EUR</option> 
+                    <option value="UAH">UAH</option>
+                </select><br>
+
+                <input name="edit-category" required><br>
+                <input name="edit-image"><br>
+
+                <button type="submit">Save</button>
+                <button type="button" name="edit-cancel-btn">Cancel</button>
+            </fieldset>
         </form>
     </dialog>
 
-    <div id="product-cards">
-
-    </div>
-
-    <div id = "snackbar"></div>
-    
+    <script src="LR6.js"></script>
 </body>
-
-<script src="LR6.js"></script>
+</html>
