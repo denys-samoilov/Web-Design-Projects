@@ -144,15 +144,11 @@ sortDiv.addEventListener('click', (event) => {
 
 let filterProducts = (category) => {
 
-    let handledProducts = products;
-    if(currentSort !== null){
-        handledProducts = sortProducts(handledProducts, currentSort);
-    }
+    let handledProducts = [...products];
 
     if (category !== 'All') 
     {
-        handledProducts = products.filter(product => product.category === category);
-        refreshProductList(handledProducts);
+        handledProducts = handledProducts.filter(product => product.category === category);
     }
     return handledProducts;
 
@@ -199,7 +195,7 @@ let updateProduct = (productId, productData) => {
             };
         }
 
-
+        return product;
 
         
     });

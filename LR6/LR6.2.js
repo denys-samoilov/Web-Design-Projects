@@ -1,5 +1,6 @@
-let currentSort = "none";
+let currentSort = "";
 
+let sortDiv = document.querySelector("#sort-div");
 let addForm = document.querySelector('#add-form');
 let addButton = document.querySelector('[name = "add-btn"]');
 let taskNameInput = document.querySelector('[name = "task-name-input"]');
@@ -11,15 +12,20 @@ let tasks = [];
 addForm.addEventListener('submit', (event) => {
     event.preventDefault();
     addTask();
-    refreshTasks();
+    let sortedTasks = sortTasks(currentSort);
+    refreshTasks(sortedTasks);
+});
+
+sortDiv.addEventListener('click', (event) => {
+    if (event.target.tagName === "BUTTON") {
+        currentSort = event.target.dataset.sort;
+        let sortedTasks = sortTasks(currentSort);
+        refreshTasks(sortedTasks);
+    }
 });
 
 let addTask = () => {
     let taskName = taskNameInput.value;
-    if (taskName === "") {
-        alert("Please enter a task name");
-        return;
-    }
 
     let task = {
         name: taskName,
@@ -33,10 +39,10 @@ let addTask = () => {
     return task;
 }
 
-let refreshTasks = () => {
+let refreshTasks = (tasksList) => {
     tasksContainer.innerHTML = "";
-    for (let i = 0; i < tasks.length; i++) {
-        let task = tasks[i];
+    for (let i = 0; i < tasksList.length; i++) {
+        let task = tasksList[i];
         let taskElement = document.createElement("div");
         taskElement.classList.add("task");
         taskElement.innerHTML = `         
@@ -61,13 +67,15 @@ let refreshTasks = () => {
             taskElement.classList.add("removing");
             setTimeout(() => {
                 deleteTask(i);
-                refreshTasks();
+                let sortedTasks = sortTasks(currentSort);
+            refreshTasks(sortedTasks);
             }, 300);    
         });
 
         editButton.addEventListener("click", () => {
             editTask(i);
-            refreshTasks();
+            let sortedTasks = sortTasks(currentSort);
+            refreshTasks(sortedTasks);
         });
         
 
@@ -94,7 +102,7 @@ let editTask = (index) => {
 }
 
 let sortTasks = (sortBy) => {
-    let sortedTasks = tasks;
+    let sortedTasks = [...tasks];
     if (sortBy === "name") {
         sortedTasks.sort((a, b) => a.name.localeCompare(b.name));
     } else if (sortBy === "dateOfCreating") {
