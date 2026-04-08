@@ -242,7 +242,7 @@ let createProductCard = (product) => {
     card.dataset.id = product.id;
 
     card.innerHTML = `
-        <img src="${product.image}"  class="product-image">
+        <img src="${product.image}" alt="${product.name}"  class="product-image">
         <div class="product-info">
             <p class="product-id">ID: ${product.id}</p>
             <h3 class="product-name">${product.name}</h3>
@@ -290,7 +290,7 @@ let refreshProductList = (filteredProducts) => {
         let productCard = createProductCard(product);
         productCards.appendChild(productCard);
     });
-    totalPrice.innerHTML = `Total Price: ${sum}`;
+    totalPrice.innerHTML = `Total Price (UAH): ${sum}`;
 
 
 
