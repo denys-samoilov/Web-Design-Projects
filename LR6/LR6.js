@@ -37,7 +37,6 @@
 
  let snackbar = document.querySelector('#snackbar');
  
- let getEmptyListMessage = () => products.length === 0 ? "List of products is empty. Add new product" : "";
 
 
  let generateId = () => {
@@ -277,7 +276,10 @@ let createProductCard = (product) => {
 let refreshProductList = (filteredProducts) => {
     productCards.innerHTML = '';
 
-    snackbar.innerHTML = getEmptyListMessage();
+    if(filteredProducts.length === 0){
+        snackbar.innerHTML = "List of products is empty. Add new product";
+    }
+    else snackbar.innerHTML = "";
 
     let categories = filteredProducts.map(product => product.category);
     refreshFilters(categories)
