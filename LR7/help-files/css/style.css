@@ -82,7 +82,8 @@ body {
 /*                              Main game screen style                       */
 
 .wrapper {
-  display: none;
+  opacity: 0;
+  visibility: hidden;
   position: fixed;
   left: 50%;
   top: 55%;
@@ -97,7 +98,8 @@ body {
 }
 
 .game-screen {
-  display: none;
+  opacity: 0;
+  visibility: hidden;
   position: fixed;
   left: 50%;
   top: 50%;
@@ -166,6 +168,15 @@ body {
   font-size: 30px;
   color: #fff;
 }
+
+.message--win {
+    background: url(../img/you-won.png) no-repeat;
+}
+
+.message--dead {
+  background: url(../img/you-lost.png) no-repeat;
+}
+
 /*                              End Alert messages style                     */
 
 /*                              Game panels for scores style                 */
@@ -179,6 +190,7 @@ body {
 }
 
 .game-panels {
+  
 }
 
 
@@ -264,9 +276,7 @@ body {
 
   box-sizing: border-box;
 }
-/*                              End Game panels for scores style             */
 
-/*                              Game win screen style                       */
 .win-screen {
   display: none;
    /* display: block;*/
@@ -315,29 +325,20 @@ body {
 
 .gunman-level-1 {
   background: url('../img/gunman.png') 0 0;
-  animation: gunman-level-1__walk 0.5s steps(3) infinite;
 }
 
-.gunman-level-1__standing {
-  background-position: -400px 0;
-}
 
-.gunman-level-1__ready {
-  background-position: -808px 0;
-}
 
 .gunman-level-1__shooting {
   animation: gunman-level-1__duel 0.5s step-start;
   animation-iteration-count: 1;
-  background-position: -940px 0;
-  width: 135px;
+  background-position: -235px 0;
   left: 340px;
 }
 
 .gunman-level-1__death {
-  animation: gunman-level-1__death 1s steps(4);
-  background-position: -1616px 0;
-  width: 128px;
+  animation: gunman-level-1__death 0.5s step-start;
+  background-position: -372px 0;
   left: 340px;
 }
 
@@ -352,24 +353,25 @@ body {
 
 @keyframes gunman-level-1__duel {
   from {
-
+    background-position: -235px 0;
   }
   to {
-
+    background-position: -201px 0;
   }
 }
 
 @keyframes gunman-level-1__death {
   from {
-
+    background-position: -372px 0;
   }
   to {
-
+    background-position: -338px 0;
   }
 }
 
 
 .moving {
+  animation: gunman-level-1__walk 0.5s steps(3) infinite;
   left: 340px;
   transition: left 5s linear;
 }
@@ -377,6 +379,6 @@ body {
 .standing {
   left: 340px;
   animation: none;
+  background-position: -100px 0;
 }
-/*                              Gunman style                                 */
 
