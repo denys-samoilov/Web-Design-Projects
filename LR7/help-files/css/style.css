@@ -161,25 +161,24 @@ body {
 
 .message--dead,
 .message--win {
+  width: 200px;
+  height: 68px;
   left: 50%;
   top: 30%;
 
-  font-family: "PressStart2P";
-  font-size: 30px;
-  color: #fff;
 }
 
 .message--win {
     background: url(../img/you-won.png) no-repeat;
+    background-size: contain;
 }
 
 .message--dead {
   background: url(../img/you-lost.png) no-repeat;
+  background-size: contain;
 }
 
-/*                              End Alert messages style                     */
 
-/*                              Game panels for scores style                 */
 .white-line {
   position: absolute;
   left: 50px;
