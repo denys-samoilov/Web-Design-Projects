@@ -21,9 +21,15 @@ let scorePanel = document.querySelector('.score-panel__score');
 let gunman = document.querySelector('.gunman');
 let message = document.querySelector('.message');
 
+let restartBtn = document.querySelector('.button-restart');
+let nextLevelBtn = document.querySelector('.button-next-level');
+
+
+let score = 0;
 let allowShooting = false;
 let playerWon = false;
 let duelEnded = false;
+let level = 1;
 
 startBtn.addEventListener('click', () => {
   startGame();
@@ -31,6 +37,14 @@ startBtn.addEventListener('click', () => {
 
 gunman.addEventListener('click', () => {
   playerShootsGunman();
+});
+
+restartBtn.addEventListener('click', () => {
+  restartGame();
+});
+
+nextLevelBtn.addEventListener('click', () => {
+  nextLevel();
 });
 
 async function startGame() {
@@ -42,28 +56,26 @@ async function startGame() {
     wrapper.style.visibility = 'visible';
     gameScreen.style.opacity = '1';
     gameScreen.style.visibility = 'visible';
+    gameScreen.classList.add('regular-bg');
+    await startLevel1();
+      
+}
 
-    timePanelGunman.textContent = (gunmanTime / 1000).toFixed(2);
-    timePanelYou.textContent = (playerTime / 1000).toFixed(2);
-
-    await moveGunman();
+async function startLevel1() {
+  alert('Level 1 started!');
+  timePanelGunman.textContent = (gunmanTime / 1000).toFixed(2);
+  timePanelYou.textContent = (playerTime / 1000).toFixed(2);
   
-    await prepareForDuel();  
-}
-
-
-function restartGame() {
-
-}
-
-function nextLevel() {
-
+  await moveGunman();
+  await prepareForDuel();
 }
 
 async function moveGunman() {
-  gunman.classList.add('gunman-level-1', 'gunman-level-1__walk', 'moving');
+  gunman.classList.add('gunman-level-' + level);
+
+  gunman.classList.add('moving');
   await wait(5000);
-  gunman.classList.remove('moving', 'gunman-level-1__walk');
+  gunman.classList.remove('moving');
   gunman.classList.add('standing');
   await wait(1000);
 }
@@ -72,7 +84,7 @@ async function prepareForDuel() {
   console.log('Prepare for duel!');
 
   gunman.classList.remove('standing');
-  gunman.classList.add('gunman-level-1__shooting');
+  gunman.classList.add('gunman-level-' + level + '__shooting');
   message.classList.add('message--fire');
 
   allowShooting = true;
@@ -103,18 +115,25 @@ function timeCounter() {
 
 }
 
-function gunmanShootsPlayer() {
+async function gunmanShootsPlayer() {
   if (duelEnded) return;
 
   console.log('Gunman shoots player!');
-  gunman.classList.add('gunman-level-1__shooting');
-  gunman.classList.remove('gunman-level-1__death');
-  gunman.classList.remove('gunman-level-1__walk');
+  gunman.classList.add('gunman-level-' + level + '__shooting');
+  gunman.classList.remove('gunman-level-' + level + '__death');
+  gunman.classList.remove('gunman-level-' + level + '__walk');
   gunman.classList.remove('moving');
   gunman.style.left = gunman.offsetLeft + 'px';
   message.classList.remove('message--fire');
   message.classList.add('message--dead');
+  gameScreen.classList.remove('regular-bg');
+  gameScreen.classList.add('lose-bg');
+
+  playerWon = false;
   duelEnded = true;
+
+  await wait(3000);
+  restartGame();
 }
 
 function playerShootsGunman() {
@@ -122,16 +141,17 @@ function playerShootsGunman() {
 
   if (allowShooting) {
     console.log('Player shoots gunman!');
-    gunman.classList.remove('gunman-level-1__shooting');
-    gunman.classList.add('gunman-level-1__death');
+    gunman.classList.remove('gunman-level-' + level + '__shooting');
+    gunman.classList.add('gunman-level-' + level + '__death');
     message.classList.remove('message--fire');
     message.classList.add('message--win');
-
-    allowShooting = false;
+    
     playerWon = true;
     duelEnded = true;
 
     scoreCount();
+    restartBtn.style.display = 'block';
+    nextLevelBtn.style.display = 'block';    
   } 
 
   else {
@@ -142,6 +162,66 @@ function playerShootsGunman() {
 function scoreCount() {
   let timeDifference = gunmanTime - playerTime;
 
-  let score = timeDifference * 10;
+  score += timeDifference * 10;
   scorePanel.textContent = "Score: " + score;
+}
+
+function restartGame() {
+  location.reload();
+}
+
+async function nextLevel() {
+  alert('Next level coming soon!');
+  level++;
+  switch(level) {
+    case 2:
+      gunmanTime = 1000;
+      await startLevel2();
+      break;
+    case 3:
+      gunmanTime = 800;
+      await startLevel3();
+      break;
+    default:
+      alert('No more levels available!');
+      return;
+  }
+}
+
+async function resetState() {
+  duelEnded = false;
+  allowShooting = false;
+  playerWon = false;
+  playerTime = 0;
+
+  message.classList.remove('message--win', 'message--dead', 'message--fire');
+
+  gunman.classList.remove(
+    'gunman-level-1__death',
+    'gunman-level-2__death',
+    'gunman-level-1__shooting',
+    'gunman-level-2__shooting',
+    'standing',
+    'moving'
+  );
+
+  gameScreen.classList.remove('lose-bg', 'win-bg');
+  gameScreen.classList.add('regular-bg');
+
+  restartBtn.style.display = 'none';
+  nextLevelBtn.style.display = 'none';
+}
+
+async function startLevel2() {
+  resetState();
+  gunman.classList.remove('gunman-level-1');
+  gunman.classList.add('gunman-level-2');
+  gunman.style.left = '';
+  gunman.classList.remove('moving');
+  await wait(50);
+  timePanelGunman.textContent = (gunmanTime / 1000).toFixed(2);
+  timePanelYou.textContent = (playerTime / 1000).toFixed(2);
+
+  await moveGunman();
+  await prepareForDuel();
 }
