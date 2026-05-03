@@ -1,0 +1,45 @@
+<!DOCTYPE html>
+<head>
+    <title>Memory Game</title>
+    <link rel="stylesheet" href="style/style.css">
+</head>
+
+<body>
+
+    <button class="settings-btn">Settings</button>
+    
+
+    <div class="container">
+        <table class="cards"></table>
+    </div>
+
+    <div class="timer"></div>
+
+    <div class="modal hidden" id="settingsModal">
+        <div class="modal-content">
+            <span class="close" id="closeModal">&times;</span>
+
+            <h2>Settings</h2>
+
+            <h4>Grid size</h4>
+            <select id="gridSize">
+                <option value="small">4x4</option>
+                <option value="medium">4x5</option>
+                <option value="big">4x6</option>
+            </select>
+
+            <h4>Difficulty</h4>
+            <select id="difficulty">
+                <option value="easy">Easy</option>
+                <option value="medium">Medium</option>
+                <option value="hard">Hard</option>
+            </select>
+
+            <button id="applySettings">Apply</button>
+        </div>
+    </div>
+
+    <script src="script/script.js"></script>
+
+</body>
+</html>
