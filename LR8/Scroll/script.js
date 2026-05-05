@@ -25,12 +25,12 @@ let imageArray = [
 ];
 
 arrowsEn.addEventListener("change", () => {
-  prev.style.display = arrowsEn.checked ? "block" : "none";
-  next.style.display = arrowsEn.checked ? "block" : "none";
+  prev.style.visibility = arrowsEn.checked ? "visible" : "hidden";
+  next.style.visibility = arrowsEn.checked ? "visible" : "hidden";
 });
 
 dotsEn.addEventListener("change", () => {
- dotsContainer.style.display = dotsEn.checked ? "flex" : "none";
+ dotsContainer.style.visibility = dotsEn.checked ? "visible" : "hidden";
 });
 
 autoEn.addEventListener("change", () => {

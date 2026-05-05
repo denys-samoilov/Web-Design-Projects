@@ -1,0 +1,75 @@
+.flip-container {
+    width: 80px;
+    height: 80px;
+    perspective: 1000px;
+    position: relative;
+}
+
+.card-container {
+    display: grid;
+    grid-template-columns: repeat(auto-fill, minmax(100px, 1fr));
+    gap: 20px;
+    padding: 20px;
+}
+
+.flipper {
+    width: 100%;
+    height: 100%;
+    transition: 0.3s;
+    transform-style: preserve-3d;
+    position: relative;
+}
+
+.front, .back {
+    width: 100%;
+    height: 100%;
+    position: absolute;
+    backface-visibility: hidden;
+}
+
+.back {
+    transform: rotateY(180deg);
+}
+
+.front img, .back img {
+    width: 100%;
+    height: 100%;
+}
+
+.card-container.edit-mode .flip-container {
+    animation: wiggle 0.25s infinite;
+    cursor: grab;
+}
+
+.delete {
+    position: absolute;
+    top: -5px;
+    right: -5px;
+    background: red;
+    color: white;
+    width: 18px;
+    height: 18px;
+    font-size: 14px;
+    text-align: center;
+    border-radius: 50%;
+    cursor: pointer;
+    display: none;
+}
+
+.card-container.edit-mode .delete {
+    display: block;
+}
+
+.placeholder {
+    border: 2px dashed #999;
+    width: 80px;
+    height: 80px;
+}
+
+@keyframes wiggle {
+    0% { transform: rotate(0deg); }
+    25% { transform: rotate(2deg); }
+    50% { transform: rotate(-2deg); }
+    75% { transform: rotate(2deg); }
+    100% { transform: rotate(0deg); }
+}

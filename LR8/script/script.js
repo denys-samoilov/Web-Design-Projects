@@ -272,7 +272,9 @@ function checkWin() {
             else pvpRender.textContent = "Draw!";
 
            if (gameOptions.currentRound <= gameOptions.rounds) {
+            setTimeout(() => {
             pvpRender.textContent = `Statistics - ${p1.name}: ${p1.roundsWon} rounds won | ${p2.name}: ${p2.roundsWon} rounds won. Starting round ${gameOptions.currentRound}...`;
+            }, 2000);
             setTimeout(() => {
                 pvpRender.textContent = "";
                 startGame(gameOptions);
@@ -298,7 +300,7 @@ function renderPlayer() {
 
     const current = gameOptions.currentPlayer === 1 ? gameOptions.player1 : gameOptions.player2;
 
-    playerInfo.textContent = `Turn: ${current.name} | Score: ${current.score}`;
+    playerInfo.textContent = `Active Player: ${current.name} | Score: ${current.score}`;
 }
 
 function startGame(gameOptions) {
