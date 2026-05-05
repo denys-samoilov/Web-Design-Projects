@@ -1,22 +1,45 @@
 <!DOCTYPE html>
+
 <head>
-    <title>Slider</title>
-    <link rel="stylesheet" href="style.css">
+  <meta charset="utf-8">
+  <link rel="stylesheet" href="style.css">
 </head>
+
 <body>
-<h1>CSS carousel single item per page</h1>
-<ul>
-    <li data-accName="Item 1">
-      <h2>Page 1</h2>
-    </li>
-    <li data-accName="Item 2">
-      <h2>Page 2</h2>
-    </li>
-    <li data-accName="Item 3">
-      <h2>Page 3</h2>
-    </li>
-    <li data-accName="Item 4">
-      <h2>Page 4</h2>
-    </li>
-  </ul>
+
+<div class="slider-block">
+<div class="slider-wrapper">
+  <button class="arrow prev"><</button>
+
+  <div class="carousel" id="carousel">
+    <div class="item">slide 1</div>
+    <div class="item">slide 2</div>
+    <div class="item">slide 3</div>
+    <div class="item">slide 4</div>
+  </div>
+
+  <button class="arrow next">></button>
+</div>
+<div class="dots">
+    <div class="dot" value = "0"></div>
+    <div class="dot" value = "1"></div>
+    <div class="dot" value = "2"></div>
+    <div class="dot" value = "3"></div>
+  </div>
+</div>
+
+<input type="checkbox" class="dots-en" checked>
+<label for="dots-en">Dots</label>
+
+<input type="checkbox" class="arrows-en" checked>
+<label for="arrows-en">Arrows</label>
+
+<input type="checkbox" class="auto-en" checked>
+<label for="auto-en">Auto Scroll</label>
+<input type = "number" class="animation-speed" value = "1000">
+<label for="animation-speed">Animation Speed</label>
+
+  <script src="script.js"></script>
+
 </body>
+</html>
