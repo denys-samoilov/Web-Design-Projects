@@ -1,97 +1,122 @@
 const table = document.querySelector('.cards');
-const startButton = document.querySelector('.start-btn');
 const settingsButton = document.querySelector('.settings-btn');
 const modal = document.getElementById('settingsModal');
 const closeModal = document.getElementById('closeModal');
 const applySettings = document.getElementById('applySettings');
 const timerElement = document.querySelector('.timer');
+const restartButton = document.querySelector('.restart-btn');
+const discardButton = document.querySelector('.discard-btn');
+const pvpButton = document.querySelector('.pvp-btn');
+const playerInfo = document.querySelector('.player-info');
+const pvpRender = document.querySelector('.pvp-render');
 
 const smallValueSize = {
-    values: ['js', 'js', 'html', 'html', 'css', 'css', 'php', 'php', 'python', 'python', 'java', 'java', 'csharp', 'csharp', 'cplus', 'cplus'],
+    values: ['js','js','html','html','css','css','php','php','python','python','java','java','csharp','csharp','cplus','cplus'],
     rows: 4,
     cols: 4,
-    time: 180
 };
+
 const mediumValueSize = {
-    values: ['js', 'js', 'html', 'html', 'css', 'css', 'php', 'php', 'python', 'python', 'java', 'java', 'csharp', 'csharp', 'cplus', 'cplus', 'postman', 'postman', 'docker', 'docker'],
+    values: ['js','js','html','html','css','css','php','php','python','python','java','java','csharp','csharp','cplus','cplus','postman','postman','docker','docker'],
     rows: 4,
     cols: 5,
-    time: 120
 };
+
 const bigValueSize = {
-    values: ['js', 'js', 'html', 'html', 'css', 'css', 'php', 'php', 'python', 'python', 'java', 'java', 'csharp', 'csharp', 'cplus', 'cplus', 'postman', 'postman', 'docker', 'docker', 'ruby', 'ruby', 'rust', 'rust'],
+    values: ['js','js','html','html','css','css','php','php','python','python','java','java','csharp','csharp','cplus','cplus','postman','postman','docker','docker','ruby','ruby','rust','rust'],
     rows: 4,
     cols: 6,
-    time: 60
 };
 
-let firstCard = null;
-let secondCard = null;
-let lock = false;
-let timerInterval = null;
 
 
+let gameOptions = {
+    firstCard: null,
+    secondCard: null,
+    lock: false,
+    timerInterval: null,
+    turns: 0,
+
+    gridSizeValue: smallValueSize,
+    gameTime: 180,
+    remainingTime: 180,
+    pvpEnabled: false,
+    currentPlayer: 1,
+    player1: {
+        name: "",
+        score: 0,
+        roundsWon: 0
+    },
+    player2: {
+        name: "",
+        score: 0,
+        roundsWon: 0
+    },
+
+    rounds: 1,
+    currentRound: 1,
+
+    roundStats: []
+};
 
 
-settingsButton.addEventListener('click', () => {
-    modal.classList.remove('hidden');
+restartButton.addEventListener('click', () => {
+    restartButton.style.visibility = "hidden";
+    gameOptions.currentRound = 1;
+    startGame(gameOptions);
 });
 
-closeModal.addEventListener('click', () => {
-    modal.classList.add('hidden');
+discardButton.addEventListener('click', () => {
+    gameOptions.gridSizeValue = smallValueSize;
+    gameOptions.gameTime = 180;
+    startGame(gameOptions);
 });
+
+pvpButton.addEventListener('click', () => {
+    gameOptions.pvpEnabled = true;
+    startGame(gameOptions);
+});
+
+settingsButton.addEventListener('click', () => modal.classList.remove('hidden'));
+closeModal.addEventListener('click', () => modal.classList.add('hidden'));
+
 
 applySettings.addEventListener('click', () => {
     const gridSize = document.getElementById('gridSize').value;
     const difficulty = document.getElementById('difficulty').value;
 
-    let values, rows, cols;
+    if (gridSize === 'small') gameOptions.gridSizeValue = smallValueSize;
+    else if (gridSize === 'medium') gameOptions.gridSizeValue = mediumValueSize;
+    else gameOptions.gridSizeValue = bigValueSize;
 
-    if (gridSize === 'small') {
-        values = smallValueSize.values;
-        rows = smallValueSize.rows;
-        cols = smallValueSize.cols;
-    } else if (gridSize === 'medium') {
-        values = mediumValueSize.values;
-        rows = mediumValueSize.rows;
-        cols = mediumValueSize.cols;
-    } else if (gridSize === 'big') {
-        values = bigValueSize.values;
-        rows = bigValueSize.rows;
-        cols = bigValueSize.cols;
-    }
+    if (difficulty === 'easy') gameOptions.gameTime = 180;
+    else if (difficulty === 'medium') gameOptions.gameTime = 120;
+    else gameOptions.gameTime = 60;
 
-    if (difficulty === 'easy') {
-        time = 180;
-    } else if (difficulty === 'medium') {
-        time = 120;
-    } else if (difficulty === 'hard') {
-        time = 60;
-    }
-
-    clearTable();
-    createTable(values, rows, cols, );
     modal.classList.add('hidden');
+    startGame(gameOptions);
 });
 
 
 function shuffle(array) {
-    for (let i = array.length - 1; i > 0; i--) {
+    let arr = [...array];
+
+    for (let i = arr.length - 1; i > 0; i--) {
         let j = Math.floor(Math.random() * (i + 1));
-        [array[i], array[j]] = [array[j], array[i]];
+        [arr[i], arr[j]] = [arr[j], arr[i]];
     }
-    return array;
+
+    return arr;
 }
 
-function createTable(values, rows, cols) {
-    const shuffled = shuffle([...values]);
-
+function createTable(gameOptions) {
+    const shuffled = shuffle(gameOptions.gridSizeValue.values);
     let index = 0;
 
-    for (let i = 0; i < rows; i++) {
+    for (let i = 0; i < gameOptions.gridSizeValue.rows; i++) {
         const tr = document.createElement('tr');
 
-        for (let j = 0; j < cols; j++) {
+        for (let j = 0; j < gameOptions.gridSizeValue.cols; j++) {
             const td = document.createElement('td');
 
             const value = shuffled[index++];
@@ -121,65 +146,182 @@ function createTable(values, rows, cols) {
     }
 }
 
+
 function flipCard(card) {
-    if (lock || card === firstCard) return;
+    if (gameOptions.lock || card === gameOptions.firstCard) return;
+
+    gameOptions.turns++;
 
     card.classList.add('flip');
 
-    if (!firstCard) {
-        firstCard = card;
+    if (!gameOptions.firstCard) {
+        gameOptions.firstCard = card;
+        return;
     }
 
-    else {
-        secondCard = card;
-        lock = true;
-    }
+    gameOptions.secondCard = card;
+    gameOptions.lock = true;
 
-    checkMatch(firstCard, secondCard);
+    checkMatch();
+    checkWin();
 }
 
-function checkMatch(firstCard, secondCard) {
+function checkMatch() {
+    const { firstCard, secondCard } = gameOptions;
+
     if (!firstCard || !secondCard) return;
+
     if (firstCard.dataset.type === secondCard.dataset.type) {
+
+        firstCard.style.pointerEvents = "none";
+        secondCard.style.pointerEvents = "none";
+
+
+        if (gameOptions.pvpEnabled) {
+            if (gameOptions.currentPlayer === 1)
+                gameOptions.player1.score++;
+            else
+                gameOptions.player2.score++;
+            renderPlayer();
+        }
+
         reset();
+
     } else {
         setTimeout(() => {
             firstCard.classList.remove('flip');
             secondCard.classList.remove('flip');
+
+            if (gameOptions.pvpEnabled) {
+                gameOptions.currentPlayer =
+                    gameOptions.currentPlayer === 1 ? 2 : 1;
+
+                renderPlayer();
+            }
+
             reset();
         }, 500);
     }
 }
 
-function launchTimer(time) {
-    let remainingTime = time;
+function reset() {
+    gameOptions.firstCard = null;
+    gameOptions.secondCard = null;
+    gameOptions.lock = false;
+}
 
-    if (timerInterval) clearInterval(timerInterval);
+function resetRound() {
+    gameOptions.firstCard = null;
+    gameOptions.secondCard = null;
+    gameOptions.lock = false;
+    gameOptions.turns = 0;
+    gameOptions.remainingTime = gameOptions.gameTime;
 
-    timerElement.textContent = remainingTime;
+    gameOptions.currentPlayer = 1;
 
-    timerInterval = setInterval(() => {
-        remainingTime--;
-        timerElement.textContent = remainingTime;
+    gameOptions.player1.score = 0;
+    gameOptions.player2.score = 0;
+}
 
-        if (remainingTime <= 0) {
-            clearInterval(timerInterval);
+
+function launchTimer() {
+    let time = gameOptions.gameTime;
+    gameOptions.remainingTime = time;
+
+    if (gameOptions.timerInterval) clearInterval(gameOptions.timerInterval);
+
+    timerElement.textContent = time;
+
+    gameOptions.timerInterval = setInterval(() => {
+        gameOptions.remainingTime--;
+        timerElement.textContent = gameOptions.remainingTime;
+
+        if (gameOptions.remainingTime <= 0) {
+            clearInterval(gameOptions.timerInterval);
+            gameOptions.lock = true;
             timerElement.textContent = "Game Over";
+            restartButton.style.visibility = "visible";
         }
     }, 1000);
 }
 
-function clearTable() {
-    while (table.firstChild) {
-        table.removeChild(table.firstChild);
+
+function checkWin() {
+    const remaining = document.querySelectorAll('.flip-container:not(.flip)');
+
+    if (remaining.length === 0) {
+        clearInterval(gameOptions.timerInterval);
+        gameOptions.lock = true;
+
+
+
+        if (gameOptions.pvpEnabled) {
+            const p1 = gameOptions.player1;
+            const p2 = gameOptions.player2;
+            gameOptions.currentRound++;
+
+
+            if (p1.score > p2.score) { 
+                msg = `${p1.name} wins!`;
+                gameOptions.player1.roundsWon++;
+            }
+            else if (p2.score > p1.score) {
+                pvpRender.textContent = `${p2.name} wins!`;
+                gameOptions.player2.roundsWon++;
+            }
+            else pvpRender.textContent = "Draw!";
+
+           if (gameOptions.currentRound <= gameOptions.rounds) {
+            pvpRender.textContent = `Statistics - ${p1.name}: ${p1.roundsWon} rounds won | ${p2.name}: ${p2.roundsWon} rounds won. Starting round ${gameOptions.currentRound}...`;
+            setTimeout(() => {
+                pvpRender.textContent = "";
+                startGame(gameOptions);
+            }, 2000);
+                return;}
+
+            if (gameOptions.currentRound === gameOptions.rounds + 1) {
+                msg += ` Final Score - ${p1.name}: ${p1.roundsWon} | ${p2.name}: ${p2.roundsWon}`;
+                startGame(gameOptions);
+            }
+        } else {
+            msg = `You Win! Turns: ${gameOptions.turns} | Time remaining: ${gameOptions.remainingTime}s`;
+        }
+
+        timerElement.textContent = msg;
+        restartButton.style.visibility = "visible";
     }
 }
 
-function reset() {
-    firstCard = null;
-    secondCard = null;
-    lock = false;
+
+function renderPlayer() {
+    if (!gameOptions.pvpEnabled) return;
+
+    const current = gameOptions.currentPlayer === 1 ? gameOptions.player1 : gameOptions.player2;
+
+    playerInfo.textContent = `Turn: ${current.name} | Score: ${current.score}`;
 }
 
-createTable(smallValueSize.values, smallValueSize.rows, smallValueSize.cols);
-launchTimer(smallValueSize.time);
+function startGame(gameOptions) {
+    clearTable();
+
+    resetRound(); 
+
+    restartButton.style.visibility = "hidden";
+
+    if (gameOptions.pvpEnabled && gameOptions.currentRound === 1) {
+        gameOptions.player1.name = prompt("Enter Player 1's name:");
+        gameOptions.player2.name = prompt("Enter Player 2's name:");
+        gameOptions.rounds = parseInt(prompt("Enter number of rounds:"));
+    }
+    
+
+    createTable(gameOptions);
+    launchTimer();
+    renderPlayer();
+}
+
+function clearTable() {
+    table.innerHTML = "";
+}
+
+startGame(gameOptions);

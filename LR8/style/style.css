@@ -56,3 +56,14 @@
 .hidden {
     display: none;
 }
+
+.restart-btn {
+    visibility: hidden;
+    margin-top: 10px;
+}
+
+.timer {
+    font-size: 24px;
+    margin-top: 20px;
+    
+}
