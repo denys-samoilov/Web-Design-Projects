@@ -7,11 +7,13 @@
 .carousel {
   display: flex;          
   overflow: hidden;       
-  width: 100%;            
+  width: 100%;     
+  justify-content: flex-start;       
 }
 
 .item {
-  min-width: 100%;       
+  min-width: 100%;     
+  flex-shrink: 0;  
   transition: transform 1s ease-in-out;
   
   text-align: center;

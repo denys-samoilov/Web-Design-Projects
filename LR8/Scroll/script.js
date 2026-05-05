@@ -1,9 +1,11 @@
+let items;
+let dots;
 const sliderBlock = document.querySelector(".slider-block");
 const carousel = document.getElementById("carousel");
-const items = document.querySelectorAll(".item");
 const prev = document.querySelector(".prev");
 const next = document.querySelector(".next");
-const dots = document.querySelectorAll(".dot");
+
+const dotsContainer = document.querySelector(".dots");
 
 const arrowsEn = document.querySelector(".arrows-en");
 const dotsEn = document.querySelector(".dots-en");
@@ -12,15 +14,14 @@ const animationSpeedInput = document.querySelector(".animation-speed");
 
 let index = 0;
 let interval;
-let autoplay = true;
+let autoplay = false;
 let animationSpeed = 1000;
 
 let imageArray = [
+  "https://static.vecteezy.com/system/resources/thumbnails/001/849/553/small/modern-gold-background-free-vector.jpg",
+  "https://cdn.pixabay.com/photo/2015/10/01/21/57/wallpaper-967837_1280.jpg",
   "https://images.unsplash.com/photo-1506744038136-46273834b3fb?ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxzZWFyY2h8Mnx8c2xpZGVyfGVufDB8fDB8fHww&auto=format&fit=crop&w=800&q=60",
-  "https://images.unsplash.com/photo-1506744038136-46273834b3fb?ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxzZWFyY2h8Mnx8c2xpZGVyfGVufDB8fDB8fHww&auto=format&fit=crop&w=800&q=60",
-  "https://images.unsplash.com/photo-1506744038136-46273834b3fb?ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxzZWFyY2h8Mnx8c2xpZGVyfGVufDB8fDB8fHww&auto=format&fit=crop&w=800&q=60",
-  "https://images.unsplash.com/photo-1506744038136-46273834b3fb?ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxzZWFyY2h8Mnx8c2xpZGVyfGVufDB8fDB8fHww&auto=format&fit=crop&w=800&q=60",
-  "https://images.unsplash.com/photo-1506744038136-46273834b3fb?ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxzZWFyY2h8Mnx8c2xpZGVyfGVufDB8fDB8fHww&auto=format&fit=crop&w=800&q=60",
+  "https://images.unsplash.com/photo-1506744038136-46273834b3fb?ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxzZWFyY2h8Mnx8c2xpZGVyfGVufDB8fDB8fHww&auto=format&fit=crop&w=800&q=60"
 ];
 
 arrowsEn.addEventListener("change", () => {
@@ -29,9 +30,7 @@ arrowsEn.addEventListener("change", () => {
 });
 
 dotsEn.addEventListener("change", () => {
-  dots.forEach((dot) => {
-    dot.style.display = dotsEn.checked ? "block" : "none";
-  });
+ dotsContainer.style.display = dotsEn.checked ? "flex" : "none";
 });
 
 autoEn.addEventListener("change", () => {
@@ -54,30 +53,39 @@ animationSpeedInput.addEventListener("change", () => {
 next.addEventListener("click", nextSlide);
 prev.addEventListener("click", prevSlide);
 
-dots.forEach((dot, i) => {
-  dot.addEventListener("click", () => {
-    dots.forEach((dot) => dot.classList.remove("active"));
-    dot.classList.add("active");
-    index = i;
-    updateSlider();
-  });
-});
 
 function createSlider() {
-  imageArray.forEach((src) => {
+  carousel.innerHTML = ""; 
+  dotsContainer.innerHTML = "";
+ for(let i = 0; i < imageArray.length; i++) {
     const item = document.createElement("div");
     item.classList.add("item");
-    item.style.backgroundImage = `url(${src})`;
+    item.style.backgroundImage = `url(${imageArray[i]}) `;
     carousel.appendChild(item);
-  });
+
+    const dot = document.createElement("div");
+    dot.classList.add("dot");
+    dot.setAttribute("value", i);
+    if (i === 0) dot.classList.add("active");
+    dotsContainer.appendChild(dot);
+      dot.addEventListener("click", () => {
+        dots.forEach((dot) => {
+          dot.classList.remove("active");
+        });
+        index = i;
+        updateSlider();
+        dot.classList.add("active");
+      });
+}
+    items = document.querySelectorAll(".item");
+    dots = document.querySelectorAll(".dot");
 }
 
 function updateSlider() {
-  const offset = (items.length - index - 1) * 100;
+  const offset = (items.length - index) * 100 - 200;
 
   items.forEach((item) => {
     item.style.transform = `translateX(${offset}%)`;
-
   });
 
   updateDots();
@@ -90,6 +98,7 @@ function updateDots() {
 }
 
 function nextSlide() {
+  const items = document.querySelectorAll(".item");
   index = (index + 1) % items.length;
   updateSlider();
 }
@@ -102,6 +111,7 @@ function prevSlide() {
 
 
 function startAutoplay(autoplay) {
+  clearInterval(interval);
   if (autoplay) {
     interval = setInterval(nextSlide, 5000);
   }
@@ -111,8 +121,13 @@ function stopAutoplay() {
   clearInterval(interval);
 }
 
-sliderBlock.addEventListener("mouseenter", stopAutoplay);
-sliderBlock.addEventListener("mouseleave", startAutoplay);
+sliderBlock.addEventListener("mouseenter", () => {
+  stopAutoplay();
+});
+
+sliderBlock.addEventListener("mouseleave", () => {
+  startAutoplay(autoplay);
+});
 
 document.addEventListener("keydown", (e) => {
   if (e.key === "ArrowRight") {
@@ -122,4 +137,5 @@ document.addEventListener("keydown", (e) => {
   }
 });
 
-startAutoplay();
+createSlider();
+
