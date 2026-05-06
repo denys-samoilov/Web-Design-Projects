@@ -82,7 +82,7 @@ function createSlider() {
 }
 
 function updateSlider() {
-  const offset = (items.length - index) * 100 - 200;
+  const offset = (- index) * 100;
 
   items.forEach((item) => {
     item.style.transform = `translateX(${offset}%)`;
