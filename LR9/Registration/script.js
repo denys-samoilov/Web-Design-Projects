@@ -30,7 +30,7 @@ const toggleConfirmPassword = document.getElementById('toggleConfirmPassword');
 const submitButton = form.elements.submitButton;
 
 const citiesUkraine = ['Chernivtsi', 'Lviv', 'Odesa'];
-const citiesPoland = ['Warsaw', 'Krakow', 'Krakow'];
+const citiesPoland = ['Warsaw', 'Krakow', 'Wroclaw'];
 const citiesCanada = ['Toronto', 'Vancouver', 'Montreal'];
 
 form.addEventListener('input', () => {
@@ -49,13 +49,15 @@ countryInput.addEventListener('change', () => {
     createCityOptions(countryInput.value);
 });
 
-submitButton.addEventListener('click', (event) => {
+form.addEventListener('submit', (event) => {
     event.preventDefault();
     if (validateForm()) {
         alert('Registration successful!');
         form.reset();
     }
 });
+
+
 
 function validateForm() {
     let isNameValid = validateName(nameInput, fNameError);
@@ -204,3 +206,7 @@ function createCityOptions(country) {
 
 createCityOptions(countryInput.value);
 
+let formData = new FormData(form);
+formData.forEach((value, key) => {
+    console.log(`${key}: ${value}`);
+});

@@ -15,12 +15,12 @@ togglePassword.addEventListener('click', () => {
     showPassword(passwordInput, togglePassword);
 });
 
-submitButton.addEventListener('click', (event) => {
+form.addEventListener('submit', (event) => {
     event.preventDefault();
     if (validateLoginForm()) {
         alert('Login successful!');
+        loginForm.reset();
     }
-    loginForm.reset();
 });
 
 function validateLoginForm() {
