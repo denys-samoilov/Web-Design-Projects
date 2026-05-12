@@ -1,0 +1,36 @@
+<!DOCTYPE html>
+<head>
+    <title>Login</title>
+     <link rel="stylesheet" href="style.css">
+</head>
+<body>
+    
+    <form name="loginForm">
+        <h1>Login Form</h1>
+
+        <h4>Email</h4>
+        <input type="text" placeholder="Email" name="emailInput" required>
+        <label id="emailError" class="error-message"></label>
+        <p></p>
+
+        <h4>Password</h4>
+            <div class="password-container">
+                <input
+                    type="password"
+                    placeholder="Password"
+                    name="passwordInput"
+                    required
+                >
+
+                <span class="toggle-password"
+                      id="togglePassword">
+                    <img id = "passwordImage" src="images/closed eye.jpg">
+                </span>
+            </div>
+        <label id="passwordError" class="error-message"></label>
+
+        <button name="submitButton" type="submit">Login</button>
+    </form>
+
+    <script src="script.js"></script>
+</body>

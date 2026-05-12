@@ -1,0 +1,92 @@
+<!DOCTYPE html>
+<head>
+    <title>Registration</title>
+     <link rel="stylesheet" href="style.css">
+</head>
+
+<body>
+    
+    <form name="registrationForm">
+        <h1>Registration Form</h1>
+
+        <h4>First Name</h4>
+        <input type="text" placeholder="First Name" name="fNameInput" required>
+        <label id="fNameError" class="error-message"></label>
+        
+        <h4>Last Name</h4>
+        <input type="text" placeholder="Last Name" name="lNameInput" required>
+        <label id="lNameError" class="error-message"></label>
+        <p></p>
+
+        <h4>Email</h4>
+        <input type="text" placeholder="Email" name="emailInput" required>
+        <label id="emailError" class="error-message"></label>
+        <p></p>
+
+        <h4>Password</h4>
+            <div class="password-container">
+                <input
+                    type="password"
+                    placeholder="Password"
+                    name="passwordInput"
+                    required
+                >
+
+                <span class="toggle-password"
+                      id="togglePassword">
+                    <img id = "passwordImage" src="images/closed eye.jpg">
+                </span>
+            </div>
+        <label id="passwordError" class="error-message"></label>
+
+        <h4>Confirm Password</h4>
+            <div class="password-container">
+                <input
+                    type="password"
+                    placeholder="Confirm Password"
+                    name="confirmPasswordInput"
+                    required
+                >
+
+                <span class="toggle-password"
+                      id="toggleConfirmPassword">
+                    <img id = "confirmPasswordImage" src="images/closed eye.jpg">
+                </span>
+            </div>
+        <label id="confirmPasswordError" class="error-message"></label>
+        <p></p>
+
+        <h4>Phone</h4>
+        <input type="text" placeholder="Phone" name="phoneInput" required>
+        <label id="phoneError" class="error-message"></label>
+        <p></p>
+
+        <h4>Date Birth</h4>
+        <input type="date" name="dateOfBirthInput" required>
+        <label id="dateOfBirthError" class="error-message"></label>
+        <p></p>
+
+        <h4>Sex</h4>
+        <select name="sexInput" required>
+            <option value="m">Male</option>
+            <option value="f">Female</option>
+        </select>
+        <label id="sexError" class="error-message"></label>
+        <p></p>
+
+        <h4>Country</h4>
+        <select name="countryInput" required>
+            <option value="ukraine">Ukraine</option>
+            <option value="poland">Poland</option>
+            <option value="canada">Canada</option>
+        </select>
+        <label id="countryError" class="error-message"></label>
+        <p></p>
+
+        <h4>City</h4>
+        <select name="cityInput" required></select>
+        <label id="cityError" class="error-message"></label>
+        <button name="submitButton" action="submit">Submit</button>
+    </form>
+         <script src="script.js"></script>
+</body>
