@@ -53,16 +53,7 @@ submitButton.addEventListener('click', (event) => {
     event.preventDefault();
     if (validateForm()) {
         alert('Registration successful!');
-        cleanField(nameInput, fNameError);
-        cleanField(lastNameInput, lNameError);
-        cleanField(emailInput, emailError);
-        cleanField(passwordInput, passwordError);
-        cleanField(confirmPasswordInput, confirmPasswordError);
-        cleanField(phoneInput, phoneError);
-        cleanField(dateOfBirthInput, dateOfBirthError);
-        cleanField(sexInput, sexError);
-        cleanField(countryInput, countryError);
-        cleanField(cityInput, cityError);
+        form.reset();
     }
 });
 
@@ -210,12 +201,6 @@ function createCityOptions(country) {
     }
 }
 
-function cleanField(input, errorElement) {
-    input.value = '';
-    errorElement.textContent = '';
-    input.classList.remove('error');
-    input.classList.remove('valid');
-}
 
 createCityOptions(countryInput.value);
 

@@ -20,8 +20,7 @@ submitButton.addEventListener('click', (event) => {
     if (validateLoginForm()) {
         alert('Login successful!');
     }
-    cleanField(emailInput, emailError);
-    cleanField(passwordInput, passwordError);
+    loginForm.reset();
 });
 
 function validateLoginForm() {
@@ -78,11 +77,4 @@ function showPassword(input, image) {
         input.type = 'password';
         image.src = 'images/closed eye.jpg';
     }
-}
-
-function cleanField(input, errorElement) {
-    input.value = '';
-    errorElement.textContent = '';
-    input.classList.remove('error');
-    input.classList.remove('valid');
 }
