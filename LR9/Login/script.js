@@ -17,12 +17,20 @@ togglePassword.addEventListener('click', () => {
 
 submitButton.addEventListener('click', (event) => {
     event.preventDefault();
-    validateLoginForm();
+    if (validateLoginForm()) {
+        alert('Login successful!');
+    }
+    cleanField(emailInput, emailError);
+    cleanField(passwordInput, passwordError);
 });
 
 function validateLoginForm() {
-    validateEmail(emailInput, emailError);
-    validatePassword(passwordInput, passwordError);
+    let isEmailValid = validateEmail(emailInput, emailError);
+    let isPasswordValid = validatePassword(passwordInput, passwordError);
+    if (isEmailValid && isPasswordValid) {
+        return true;
+    }
+    return false;
 }
 
 function validateEmail(emailInput, errorElement) {
@@ -30,10 +38,12 @@ function validateEmail(emailInput, errorElement) {
     if (!emailRegex.test(emailInput.value)) {
         changeField(emailInput, false);
         errorElement.textContent = 'Please enter a valid email address.';
+        return false;
     }
     else {
         changeField(emailInput, true);
         errorElement.textContent = '';
+        return true;
     }
 }
 
@@ -42,10 +52,12 @@ function validatePassword(passwordInput, errorElement) {
     if (!passwordRegex.test(passwordInput.value)) {
         changeField(passwordInput, false);
         errorElement.textContent = 'Invalid password.';
+        return false;
     }
     else {
         changeField(passwordInput, true);
         errorElement.textContent = '';
+        return true;
     }
 }
 
@@ -66,4 +78,11 @@ function showPassword(input, image) {
         input.type = 'password';
         image.src = 'images/closed eye.jpg';
     }
+}
+
+function cleanField(input, errorElement) {
+    input.value = '';
+    errorElement.textContent = '';
+    input.classList.remove('error');
+    input.classList.remove('valid');
 }

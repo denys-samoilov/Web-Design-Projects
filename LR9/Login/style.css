@@ -31,7 +31,7 @@ h4{
     margin-top: 15px;
 }
 
-input,
+input:not([type="checkbox"]),
 select{
     width: 100%;
 
@@ -141,6 +141,15 @@ button:hover{
 
     margin-bottom: 15px;
     gap: 10px;
+}
+
+.checkbox-container{
+    display: flex;
+    align-items: center;
+    gap: 8px;
+
+    margin-top: 10px;
+    font-size: 14px;
 }
 
 @media screen and (max-width: 768px){

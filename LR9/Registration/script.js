@@ -51,30 +51,48 @@ countryInput.addEventListener('change', () => {
 
 submitButton.addEventListener('click', (event) => {
     event.preventDefault();
-    validateForm();
+    if (validateForm()) {
+        alert('Registration successful!');
+        cleanField(nameInput, fNameError);
+        cleanField(lastNameInput, lNameError);
+        cleanField(emailInput, emailError);
+        cleanField(passwordInput, passwordError);
+        cleanField(confirmPasswordInput, confirmPasswordError);
+        cleanField(phoneInput, phoneError);
+        cleanField(dateOfBirthInput, dateOfBirthError);
+        cleanField(sexInput, sexError);
+        cleanField(countryInput, countryError);
+        cleanField(cityInput, cityError);
+    }
 });
 
 function validateForm() {
-    validateName(nameInput, fNameError);
-    validateName(lastNameInput, lNameError);
-    validateEmail(emailInput, emailError);
-    validatePassword(passwordInput, passwordError);
-    validatePasswordMatch(passwordInput, confirmPasswordInput, confirmPasswordError);
-    validatePhone(phoneInput, phoneError);
-    validateDateOfBirth(dateOfBirthInput, dateOfBirthError);
-    validateField(sexInput, sexError);
-    validateField(countryInput, countryError);
-    validateField(cityInput, cityError);
+    let isNameValid = validateName(nameInput, fNameError);
+    let isLastNameValid = validateName(lastNameInput, lNameError);
+    let isEmailValid = validateEmail(emailInput, emailError);
+    let isPasswordValid = validatePassword(passwordInput, passwordError);
+    let isConfirmPasswordValid = validatePasswordMatch(passwordInput, confirmPasswordInput, confirmPasswordError);
+    let isPhoneValid = validatePhone(phoneInput, phoneError);
+    let isDateOfBirthValid = validateDateOfBirth(dateOfBirthInput, dateOfBirthError);
+    let isSexValid = validateField(sexInput, sexError);
+    let isCountryValid = validateField(countryInput, countryError);
+    let isCityValid = validateField(cityInput, cityError);
+    if (isNameValid && isLastNameValid && isEmailValid && isPasswordValid && isConfirmPasswordValid && isPhoneValid && isDateOfBirthValid && isSexValid && isCountryValid && isCityValid) {
+        return true;
+    }
+    return false;
 }
 
 function validateField(input, errorElement) {
     if (!input.value) {
         changeField(input, false);
         errorElement.textContent = 'This field is required.';
+        return false;
     }
     else {
         changeField(input, true);
         errorElement.textContent = '';
+        return true;
     }
 }
 
@@ -82,9 +100,11 @@ function validateName(nameInput, errorElement) {
     if(nameInput.value.length < 3 || nameInput.value.length > 15) {
         changeField(nameInput, false);
         errorElement.textContent = 'Must be between 3 and 15 characters.';
+        return false;
     } else {
         changeField(nameInput, true);
         errorElement.textContent = '';
+        return true;
     }
 }
 
@@ -93,10 +113,12 @@ function validateEmail(emailInput, errorElement) {
     if (!emailRegex.test(emailInput.value)) {
         changeField(emailInput, false);
         errorElement.textContent = 'Please enter a valid email address.';
+        return false;
     }
     else {
         changeField(emailInput, true);
         errorElement.textContent = '';
+        return true;
     }
 }
 
@@ -105,10 +127,12 @@ function validatePassword(passwordInput, errorElement) {
     if (!passwordRegex.test(passwordInput.value)) {
         changeField(passwordInput, false);
         errorElement.textContent = 'Invalid password.';
+        return false;
     }
     else {
         changeField(passwordInput, true);
         errorElement.textContent = '';
+        return true;
     }
 }
 
@@ -116,9 +140,11 @@ function validatePasswordMatch(passwordInput, confirmPasswordInput, errorElement
     if (passwordInput.value !== confirmPasswordInput.value) {
         changeField(confirmPasswordInput, false);
         errorElement.textContent = 'Passwords do not match.';
+        return false;
     } else {
         changeField(confirmPasswordInput, true);
         errorElement.textContent = '';
+        return true;
     }
 }
 
@@ -127,10 +153,12 @@ function validatePhone(phoneInput, errorElement) {
     if (!phoneRegex.test(phoneInput.value)) {
         changeField(phoneInput, false);
         errorElement.textContent = 'Please enter a valid ukrainian phone number.';
+        return false;
     }
     else {
         changeField(phoneInput, true);
         errorElement.textContent = '';
+        return true;
     }
 }
 
@@ -141,10 +169,12 @@ function validateDateOfBirth(dateOfBirthInput, errorElement) {
     if (age < 12 || dateOfBirthInput.value == '') {
         changeField(dateOfBirthInput, false);
         errorElement.textContent = 'You must be at least 12 years old.';
+        return false;
     }
     else {        
         changeField(dateOfBirthInput, true);
         errorElement.textContent = '';
+        return true;
     }
 }
 
@@ -180,6 +210,12 @@ function createCityOptions(country) {
     }
 }
 
+function cleanField(input, errorElement) {
+    input.value = '';
+    errorElement.textContent = '';
+    input.classList.remove('error');
+    input.classList.remove('valid');
+}
+
 createCityOptions(countryInput.value);
 
-validateForm();
